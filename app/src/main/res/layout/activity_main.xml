@@ -96,4 +96,19 @@
         app:layout_constraintTop_toBottomOf="@id/humidity"
         app:layout_constraintStart_toStartOf="@id/humidity" />
 
+    <Button
+        android:id="@+id/forecast_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="96dp"
+        android:onClick="loadForecastActivity"
+        android:text="@string/forecast_button_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pressure" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
