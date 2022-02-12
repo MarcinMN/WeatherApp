@@ -12,9 +12,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadForecastActivity(view: View) {
-        val intent = Intent(this, ForecastActivity::class.java).apply {
-
-        }
+        val intent = Intent(this, ForecastActivity::class.java)
         startActivity(intent)
     }
 }
