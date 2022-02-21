@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -30,7 +31,12 @@ class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         holder.itemView.apply {
-            holder.forecastDate.text = context.getString(R.string.forecast_date, calculateDate(forecastList[position].date))
+            val iconName = forecastList[position].weather.firstOrNull()?.icon
+            val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
+            Glide.with(this)
+                .load(iconUrl)
+                .into(holder.forecastConditionIcon)
+            holder.forecastDate.text = context.getString(R.string.forecast_date, calculateDate(forecastList[position].dt))
             holder.forecastTemp.text = context.getString(R.string.forecast_temp, forecastList[position].temp.day.toInt().toString())
             holder.forecastHigh.text = context.getString(R.string.forecast_high, forecastList[position].temp.max.toInt().toString())
             holder.forecastLow.text = context.getString(R.string.forecast_low, forecastList[position].temp.min.toInt().toString())
@@ -43,7 +49,7 @@ class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapte
         return forecastList.size
     }
 
-    fun calculateDate(date_long: Long) : String {
+    private fun calculateDate(date_long: Long) : String {
         val instant = Instant.ofEpochSecond(date_long)
         val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
         val formatter = DateTimeFormatter.ofPattern("MMM dd")
@@ -51,7 +57,7 @@ class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapte
         return date
     }
 
-    fun calculateTime(time_long: Long) : String {
+    private fun calculateTime(time_long: Long) : String {
         val instant = Instant.ofEpochSecond(time_long)
         val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
         val formatter = DateTimeFormatter.ofPattern("hh:mma")
