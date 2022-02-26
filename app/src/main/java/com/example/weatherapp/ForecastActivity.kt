@@ -33,6 +33,7 @@ class ForecastActivity : AppCompatActivity() {
             .build()
 
         api = retrofit.create(Api::class.java)
+
     }
 
     override fun onResume() {
