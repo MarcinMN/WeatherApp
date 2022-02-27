@@ -1,12 +1,10 @@
 package com.example.weatherapp
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.example.weatherapp.databinding.ForecastListItemBinding
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -14,34 +12,27 @@ import java.time.format.DateTimeFormatter
 
 class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
-    class ForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var forecastConditionIcon = itemView.findViewById<ImageView>(R.id.forecast_condition_icon)
-        var forecastDate = itemView.findViewById<TextView>(R.id.forecast_date)
-        var forecastTemp = itemView.findViewById<TextView>(R.id.forecast_temp)
-        var forecastHigh = itemView.findViewById<TextView>(R.id.forecast_high)
-        var forecastLow = itemView.findViewById<TextView>(R.id.forecast_low)
-        var forecastSunrise = itemView.findViewById<TextView>(R.id.forecast_sunrise)
-        var forecastSunset = itemView.findViewById<TextView>(R.id.forecast_sunset)
-    }
+    inner class ForecastViewHolder(val binding: ForecastListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.forecast_list_item, parent, false)
-        return ForecastViewHolder(view)
+        val binding = ForecastListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ForecastViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
-        holder.itemView.apply {
+        val context = holder.itemView.context
+        holder.binding.apply {
             val iconName = forecastList[position].weather.firstOrNull()?.icon
             val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
-            Glide.with(this)
+            Glide.with(holder.itemView.context)
                 .load(iconUrl)
-                .into(holder.forecastConditionIcon)
-            holder.forecastDate.text = context.getString(R.string.forecast_date, calculateDate(forecastList[position].dt))
-            holder.forecastTemp.text = context.getString(R.string.forecast_temp, forecastList[position].temp.day.toInt().toString())
-            holder.forecastHigh.text = context.getString(R.string.forecast_high, forecastList[position].temp.max.toInt().toString())
-            holder.forecastLow.text = context.getString(R.string.forecast_low, forecastList[position].temp.min.toInt().toString())
-            holder.forecastSunrise.text = context.getString(R.string.forecast_sunrise, calculateTime(forecastList[position].sunrise))
-            holder.forecastSunset.text = context.getString(R.string.forecast_sunset, calculateTime(forecastList[position].sunset))
+                .into(holder.binding.forecastConditionIcon)
+            holder.binding.forecastDate.text = context.getString(R.string.forecast_date, calculateDate(forecastList[position].dt))
+            holder.binding.forecastTemp.text = context.getString(R.string.forecast_temp, forecastList[position].temp.day.toInt().toString())
+            holder.binding.forecastHigh.text = context.getString(R.string.forecast_high, forecastList[position].temp.max.toInt().toString())
+            holder.binding.forecastLow.text = context.getString(R.string.forecast_low, forecastList[position].temp.min.toInt().toString())
+            holder.binding.forecastSunrise.text = context.getString(R.string.forecast_sunrise, calculateTime(forecastList[position].sunrise))
+            holder.binding.forecastSunset.text = context.getString(R.string.forecast_sunset, calculateTime(forecastList[position].sunset))
         }
     }
 
