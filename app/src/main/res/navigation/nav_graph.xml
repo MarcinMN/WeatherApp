@@ -25,6 +25,10 @@
             android:id="@+id/currentToForecast"
             app:destination="@id/forecastFragment" />
         <argument
+            android:name="currentConditionsArg"
+            app:argType="com.example.weatherapp.CurrentConditions"
+            app:nullable="true" />
+        <argument
             android:name="zipCodeArg"
             app:argType="string"
             app:nullable="true" />

@@ -16,9 +16,9 @@ import javax.inject.Inject
 class CurrentConditionsFragment : Fragment() {
     private val apiKey = "5025177c6bd1ce93f4ffa221fd7f7c8c"
 
-    private val args: CurrentConditionsFragmentArgs by navArgs()      // Added for safe args
+    private val args: CurrentConditionsFragmentArgs by navArgs()      // Unchanged and should be fine as is
     private lateinit var binding: FragmentCurrentConditionsBinding
-    @Inject lateinit var viewModel: CurrentConditionsViewModel
+    private lateinit var viewModel: CurrentConditionsViewModel                // Removed inject and added private
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +32,10 @@ class CurrentConditionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = CurrentConditionsViewModel()                                                        // added to initialize lateinit var
+
         binding.forecastButton.setOnClickListener {
-            //Navigation.findNavController(it).navigate(R.id.currentToForecast)
+            //Navigation.findNavController(it).navigate(R.id.currentToForecast)                         // Went back to this line commented and others not
             val zipCodeArg = CurrentConditionsFragmentDirections.currentToForecast(args.zipCodeArg)
             Navigation.findNavController(it).navigate(zipCodeArg)
         }
@@ -54,7 +56,7 @@ class CurrentConditionsFragment : Fragment() {
         viewModel.currentConditions.observe(this) { currentConditions ->
             bindData(currentConditions)
         }
-        viewModel.loadData(args.zipCodeArg)         // added parameter for safe args
+        viewModel.loadData(args.currentConditionsArg!!)         // changed parameter
     }
 
     private fun bindData(currentConditions: CurrentConditions) {

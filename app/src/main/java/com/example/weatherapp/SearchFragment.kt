@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
-    private var zipCode: String? = null
+    //private var zipCode: String? = null                       // removed var
     private lateinit var binding: FragmentSearchBinding
-    lateinit var searchViewModel: SearchViewModel               // removed inject
+    @Inject lateinit var searchViewModel: SearchViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel = SearchViewModel()
+        //searchViewModel = SearchViewModel()                                                   // line removed
 
         searchViewModel.enableButton.observe(this) { enable ->
             binding.button.isEnabled = enable
@@ -61,11 +61,18 @@ class SearchFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.searchToCurrent)
         } */
 
-        // new setOnClickListener for safe args
-        binding.button.setOnClickListener {
+        // new setOnClickListener for safe args                                                     // block commented
+        /*binding.button.setOnClickListener {
             zipCode = searchViewModel.submitButtonClicked()
             val zipCodeArg = SearchFragmentDirections.searchToCurrent(zipCode)
             Navigation.findNavController(it).navigate(zipCodeArg)
+        } */
+
+        // new setOnClickListener for safe args: CurrentConditions                                  // block added
+        binding.button.setOnClickListener {
+            searchViewModel.submitButtonClicked()
+            val currentConditionsArg = SearchFragmentDirections.searchToCurrent(searchViewModel.currentConditions.value, searchViewModel.returnZipCode())
+            Navigation.findNavController(it).navigate(currentConditionsArg)
         }
     }
 }

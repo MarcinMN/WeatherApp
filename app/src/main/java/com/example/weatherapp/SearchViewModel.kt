@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {       // removed inject code
+class SearchViewModel @Inject constructor(private val api: Api) : ViewModel() {       // added inject code
 
     private var zipCode: String? = null
     private val _enableButton = MutableLiveData(false)
@@ -39,8 +39,17 @@ class SearchViewModel : ViewModel() {       // removed inject code
         launch { _currentConditions.value = api.getCurrentConditions(zipCode.toString()) }
     } */
 
-    // new submitButtonClicked for safe args
-    fun submitButtonClicked() : String? {
+    // new submitButtonClicked for safe args                                                // This block commented
+    /*fun submitButtonClicked() : String? {
+        return zipCode
+    } */
+
+    // new submitButtonClicked for safe args: CurrentConditions                             // This block added
+    fun submitButtonClicked() = runBlocking {
+        launch { _currentConditions.value = api.getCurrentConditions(zipCode.toString()) }
+    }
+
+    fun returnZipCode() : String? {
         return zipCode
     }
 }
