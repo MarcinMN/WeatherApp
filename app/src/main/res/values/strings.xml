@@ -15,4 +15,8 @@
     <string name="forecast_low"> Low: %1$s°</string>
     <string name="forecast_sunrise">Sunrise: %1$s</string>
     <string name="forecast_sunset">Sunset: %1$s</string>
+    <string name="ok">OK</string>
+    <string name="zip_code">ZIP Code</string>
+    <string name="submit">SUBMIT</string>
+    <string name="search">Search</string>
 </resources>

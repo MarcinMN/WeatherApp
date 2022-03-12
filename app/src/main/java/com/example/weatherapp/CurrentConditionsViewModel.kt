@@ -7,13 +7,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val api: Api) : ViewModel() {
+class CurrentConditionsViewModel @Inject constructor(private val api: Api) : ViewModel() {
 
     private val _currentConditions = MutableLiveData<CurrentConditions>()
     val currentConditions: LiveData<CurrentConditions>
         get() = _currentConditions
 
-    fun loadData() = runBlocking {
+    /*fun loadData() = runBlocking {
         launch { _currentConditions.value = api.getCurrentConditions("55121") }
+    } */
+
+    // New loadData for safe args
+    fun loadData(zipCodeArg: String?) = runBlocking {
+        launch { _currentConditions.value = api.getCurrentConditions(zipCodeArg!!) }
     }
 }
