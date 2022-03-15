@@ -10,15 +10,14 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.FragmentCurrentConditionsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CurrentConditionsFragment : Fragment() {
     private val apiKey = "5025177c6bd1ce93f4ffa221fd7f7c8c"
 
-    private val args: CurrentConditionsFragmentArgs by navArgs()      // Unchanged and should be fine as is
+    private val args: CurrentConditionsFragmentArgs by navArgs()
     private lateinit var binding: FragmentCurrentConditionsBinding
-    private lateinit var viewModel: CurrentConditionsViewModel                // Removed inject and added private
+    private lateinit var viewModel: CurrentConditionsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,24 +31,15 @@ class CurrentConditionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = CurrentConditionsViewModel()                                                        // added to initialize lateinit var
+        requireActivity().title = "Current Conditions"
+
+        viewModel = CurrentConditionsViewModel()
 
         binding.forecastButton.setOnClickListener {
-            //Navigation.findNavController(it).navigate(R.id.currentToForecast)                         // Went back to this line commented and others not
             val zipCodeArg = CurrentConditionsFragmentDirections.currentToForecast(args.zipCodeArg)
             Navigation.findNavController(it).navigate(zipCodeArg)
         }
     }
-
-/*    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentCurrentConditionsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.forecastButton.setOnClickListener {
-            startActivity(Intent(this, ForecastActivity::class.java))
-        }
-    }  */
 
     override fun onResume() {
         super.onResume()
@@ -73,5 +63,4 @@ class CurrentConditionsFragment : Fragment() {
         binding.humidity.text = getString(R.string.humidity, currentConditions.main.humidity.toInt())
         binding.pressure.text = getString(R.string.pressure, currentConditions.main.pressure.toInt())
     }
-
 }

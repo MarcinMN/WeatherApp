@@ -3,12 +3,12 @@ package com.example.weatherapp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.Navigation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val api: Api) : ViewModel() {       // added inject code
+class SearchViewModel @Inject constructor(private val api: Api) : ViewModel() {
 
     private var zipCode: String? = null
     private val _enableButton = MutableLiveData(false)
@@ -35,21 +35,21 @@ class SearchViewModel @Inject constructor(private val api: Api) : ViewModel() { 
         return zipCode.length == 5 && zipCode.all { it.isDigit() }
     }
 
-    /*fun submitButtonClicked() = runBlocking {
-        launch { _currentConditions.value = api.getCurrentConditions(zipCode.toString()) }
-    } */
-
-    // new submitButtonClicked for safe args                                                // This block commented
-    /*fun submitButtonClicked() : String? {
-        return zipCode
-    } */
-
-    // new submitButtonClicked for safe args: CurrentConditions                             // This block added
     fun submitButtonClicked() = runBlocking {
-        launch { _currentConditions.value = api.getCurrentConditions(zipCode.toString()) }
+        launch {
+            try {
+                _currentConditions.value = api.getCurrentConditions(zipCode.toString())
+            } catch(e : HttpException) {
+                _showErrorDialog.value = true
+            }
+        }
     }
 
     fun returnZipCode() : String? {
         return zipCode
+    }
+
+    fun resetErrorDialog() {
+        _showErrorDialog.value = false
     }
 }

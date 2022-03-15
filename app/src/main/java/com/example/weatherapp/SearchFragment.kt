@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
-    //private var zipCode: String? = null                       // removed var
     private lateinit var binding: FragmentSearchBinding
     @Inject lateinit var searchViewModel: SearchViewModel
 
@@ -30,7 +29,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //searchViewModel = SearchViewModel()                                                   // line removed
+        requireActivity().title = "Search"
 
         searchViewModel.enableButton.observe(this) { enable ->
             binding.button.isEnabled = enable
@@ -56,23 +55,17 @@ class SearchFragment : Fragment() {
             }
         })
 
-        /*binding.button.setOnClickListener {
-            searchViewModel.submitButtonClicked()
-            Navigation.findNavController(it).navigate(R.id.searchToCurrent)
-        } */
-
-        // new setOnClickListener for safe args                                                     // block commented
-        /*binding.button.setOnClickListener {
-            zipCode = searchViewModel.submitButtonClicked()
-            val zipCodeArg = SearchFragmentDirections.searchToCurrent(zipCode)
-            Navigation.findNavController(it).navigate(zipCodeArg)
-        } */
-
-        // new setOnClickListener for safe args: CurrentConditions                                  // block added
         binding.button.setOnClickListener {
             searchViewModel.submitButtonClicked()
-            val currentConditionsArg = SearchFragmentDirections.searchToCurrent(searchViewModel.currentConditions.value, searchViewModel.returnZipCode())
-            Navigation.findNavController(it).navigate(currentConditionsArg)
+            if(!(searchViewModel.showErrorDialog.value!!)) {
+                val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
+                    searchViewModel.currentConditions.value,
+                    searchViewModel.returnZipCode()
+                )
+                Navigation.findNavController(it).navigate(currentConditionsArg)
+            } else {
+                searchViewModel.resetErrorDialog()
+            }
         }
     }
 }

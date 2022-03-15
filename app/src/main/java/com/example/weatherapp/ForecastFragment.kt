@@ -29,6 +29,9 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().title = "Forecast"
+
         binding.rvForecast.layoutManager = LinearLayoutManager(context)
     }
 

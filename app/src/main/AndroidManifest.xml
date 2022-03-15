@@ -12,10 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp">
-        <!-- <activity
-            android:name=".ForecastActivity"
-            android:label="@string/forecast_activity_name"
-            android:exported="false" /> -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
