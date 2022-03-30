@@ -19,4 +19,5 @@
     <string name="zip_code">ZIP Code</string>
     <string name="submit">SUBMIT</string>
     <string name="search">Search</string>
+    <string name="local_weather">Local Weather</string>
 </resources>
