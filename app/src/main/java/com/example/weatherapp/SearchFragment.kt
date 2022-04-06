@@ -1,11 +1,14 @@
 package com.example.weatherapp
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.weatherapp.databinding.FragmentSearchBinding
@@ -14,8 +17,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
+
     private lateinit var binding: FragmentSearchBinding
     @Inject lateinit var searchViewModel: SearchViewModel
+
+    private var lat: String? = null
+    private var lon: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,11 +67,34 @@ class SearchFragment : Fragment() {
             if(!(searchViewModel.showErrorDialog.value!!)) {
                 val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
                     searchViewModel.currentConditions.value,
-                    searchViewModel.returnZipCode()
+                    searchViewModel.returnZipCode(),
+                    null,
+                    null
                 )
                 Navigation.findNavController(it).navigate(currentConditionsArg)
             } else {
                 searchViewModel.resetErrorDialog()
+            }
+        }
+        // New location code starts here:
+        binding.localWeatherButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission((activity as MainActivity), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                lat = (activity as MainActivity).getLat()
+                lon = (activity as MainActivity).getLon()
+                searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
+                if(!(searchViewModel.showErrorDialog.value!!)) {
+                    val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
+                        searchViewModel.currentConditions.value,
+                        null,
+                        lat,
+                        lon
+                    )
+                    Navigation.findNavController(it).navigate(currentConditionsArg)
+                } else {
+                    searchViewModel.resetErrorDialog()
+                }
+            } else {
+                (activity as MainActivity).requestLocationPermission()
             }
         }
     }

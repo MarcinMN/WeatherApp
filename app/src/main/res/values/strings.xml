@@ -20,4 +20,5 @@
     <string name="submit">SUBMIT</string>
     <string name="search">Search</string>
     <string name="local_weather">Local Weather</string>
+    <string name="location_permission_rationale">Location permission required to retrieve Local Weather data.</string>
 </resources>
