@@ -79,23 +79,27 @@ class SearchFragment : Fragment() {
         // New location code starts here:
         binding.localWeatherButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission((activity as MainActivity), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                lat = (activity as MainActivity).getLat()
-                lon = (activity as MainActivity).getLon()
-                searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
-                if(!(searchViewModel.showErrorDialog.value!!)) {
-                    val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
-                        searchViewModel.currentConditions.value,
-                        null,
-                        lat,
-                        lon
-                    )
-                    Navigation.findNavController(it).navigate(currentConditionsArg)
-                } else {
-                    searchViewModel.resetErrorDialog()
-                }
+                sendLocationData()
             } else {
                 (activity as MainActivity).requestLocationPermission()
             }
+        }
+    }
+
+    fun sendLocationData() {
+        lat = (activity as MainActivity).getLat()
+        lon = (activity as MainActivity).getLon()
+        searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
+        if(!(searchViewModel.showErrorDialog.value!!)) {
+            val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
+                searchViewModel.currentConditions.value,
+                null,
+                lat,
+                lon
+            )
+            Navigation.findNavController(binding.root).navigate(currentConditionsArg)
+        } else {
+            searchViewModel.resetErrorDialog()
         }
     }
 }
