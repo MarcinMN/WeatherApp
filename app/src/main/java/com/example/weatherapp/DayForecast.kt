@@ -1,5 +1,9 @@
 package com.example.weatherapp
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class DayForecast(
     var dt: Long,
     var sunrise: Long,
@@ -8,4 +12,4 @@ data class DayForecast(
     var pressure: Float,
     var humidity: Int,
     var weather: List<ForecastCondition>
-)
+) : Parcelable
