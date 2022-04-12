@@ -76,7 +76,6 @@ class SearchFragment : Fragment() {
                 searchViewModel.resetErrorDialog()
             }
         }
-        // New location code starts here:
         binding.localWeatherButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission((activity as MainActivity), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 sendLocationData()
@@ -86,7 +85,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    fun sendLocationData() {
+    private fun sendLocationData() {
         lat = (activity as MainActivity).getLat()
         lon = (activity as MainActivity).getLon()
         searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
