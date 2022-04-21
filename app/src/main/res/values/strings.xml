@@ -21,4 +21,6 @@
     <string name="search">Search</string>
     <string name="local_weather">Local Weather</string>
     <string name="location_permission_rationale">Location permission required to retrieve Local Weather data.</string>
+    <string name="enable_notifications">Turn On Notifications</string>
+    <string name="disable_notifications">Turn Off Notifications</string>
 </resources>
