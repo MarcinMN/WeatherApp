@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.weatherapp.databinding.FragmentSearchBinding
@@ -139,26 +138,6 @@ class SearchFragment : Fragment() {
             lon = "-157.8583"
             searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
         }
-        /*try {
-            searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
-        } catch (e : NullPointerException) {
-            // Catch block is for when the emulator doesn't have location yet. Default location: Honolulu, HI
-            // Once the emulator wakes up and has a location, the "real" location is used.
-            lat = "21.3069"
-            lon = "-157.8583"
-            searchViewModel.localWeatherButtonClicked(lat!!, lon!!)
-            if(!(searchViewModel.showErrorDialog.value!!)) {
-                val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
-                    searchViewModel.currentConditions.value,
-                    null,
-                    lat,
-                    lon
-                )
-                Navigation.findNavController(binding.root).navigate(currentConditionsArg)
-            } else {
-                searchViewModel.resetErrorDialog()
-            }
-        } */
         if(!(searchViewModel.showErrorDialog.value!!)) {
             val currentConditionsArg = SearchFragmentDirections.searchToCurrent(
                 searchViewModel.currentConditions.value,
@@ -189,8 +168,10 @@ class SearchFragment : Fragment() {
     private fun sendNotification() {
         var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setSmallIcon(R.drawable.sun)
-            .setContentTitle("Notification Title")
-            .setContentText("Notification Text")
+            .setContentTitle(getString(R.string.notification_title,
+                searchViewModel.currentConditions.value?.name))
+            .setContentText(getString(R.string.notification_text,
+                searchViewModel.currentConditions.value?.main?.temp?.toInt()))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         with(NotificationManagerCompat.from(requireContext())) {
             notify(1, builder.build())
