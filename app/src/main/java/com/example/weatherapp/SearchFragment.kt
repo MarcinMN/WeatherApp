@@ -3,7 +3,10 @@ package com.example.weatherapp
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -28,10 +31,12 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     @Inject lateinit var searchViewModel: SearchViewModel
+    private lateinit var serviceIntent: Intent
 
     private var lat: String? = null
     private var lon: String? = null
     private var notificationActive: Boolean = false
+    private var updateCounter: Int = 1                                      // for testing
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +53,8 @@ class SearchFragment : Fragment() {
         requireActivity().title = "Search"
 
         createNotificationChannel()
+        serviceIntent = Intent(requireActivity().applicationContext, NotificationService::class.java)
+        requireActivity().registerReceiver(updateNotification, IntentFilter(NotificationService.TIMER_UPDATED))
 
         searchViewModel.enableButton.observe(this) { enable ->
             binding.button.isEnabled = enable
@@ -101,14 +108,18 @@ class SearchFragment : Fragment() {
                 if (!notificationActive) {
                     // turn on notifications
                     notificationActive = true
+                    serviceIntent.putExtra(NotificationService.ELAPSED_TIME, 0)
+                    requireActivity().startService(serviceIntent)
                     sendNotification()
+                    binding.notificationButton.text = getString(R.string.disable_notifications)
                 } else {
                     // turn off notifications
                     notificationActive = false
+                    requireActivity().stopService(serviceIntent)
                     with(NotificationManagerCompat.from(requireContext())) {
                         cancel(1)
                     }
-
+                    binding.notificationButton.text = getString(R.string.enable_notifications)
                 }
             } else {
                 (activity as MainActivity).requestLocationPermission()
@@ -167,7 +178,7 @@ class SearchFragment : Fragment() {
 
     private fun sendNotification() {
         var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-            .setSmallIcon(R.drawable.sun)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(getString(R.string.notification_title,
                 searchViewModel.currentConditions.value?.name))
             .setContentText(getString(R.string.notification_text,
@@ -175,6 +186,38 @@ class SearchFragment : Fragment() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         with(NotificationManagerCompat.from(requireContext())) {
             notify(1, builder.build())
+        /*var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("Test notification")
+            .setContentText("Initial Notification Text")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        with(NotificationManagerCompat.from(requireContext())) {
+            notify(1, builder.build()) */
+        }
+    }
+
+    private val updateNotification: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            getLocation()
+            var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.notification_title,
+                    searchViewModel.currentConditions.value?.name))
+                .setContentText(getString(R.string.notification_text,
+                    searchViewModel.currentConditions.value?.main?.temp?.toInt()))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            with(NotificationManagerCompat.from(requireContext())) {
+                notify(1, builder.build())
+            }
+            /*var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Test notification")
+                .setContentText(getString(R.string.update_test_string, updateCounter))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            with(NotificationManagerCompat.from(requireContext())) {
+                notify(1, builder.build())
+            }
+            updateCounter++ */
         }
     }
 }
