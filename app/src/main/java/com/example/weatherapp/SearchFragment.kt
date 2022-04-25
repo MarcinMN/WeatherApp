@@ -36,7 +36,6 @@ class SearchFragment : Fragment() {
     private var lat: String? = null
     private var lon: String? = null
     private var notificationActive: Boolean = false
-    private var updateCounter: Int = 1                                      // for testing
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -186,13 +185,6 @@ class SearchFragment : Fragment() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         with(NotificationManagerCompat.from(requireContext())) {
             notify(1, builder.build())
-        /*var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Test notification")
-            .setContentText("Initial Notification Text")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        with(NotificationManagerCompat.from(requireContext())) {
-            notify(1, builder.build()) */
         }
     }
 
@@ -209,15 +201,6 @@ class SearchFragment : Fragment() {
             with(NotificationManagerCompat.from(requireContext())) {
                 notify(1, builder.build())
             }
-            /*var builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Test notification")
-                .setContentText(getString(R.string.update_test_string, updateCounter))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            with(NotificationManagerCompat.from(requireContext())) {
-                notify(1, builder.build())
-            }
-            updateCounter++ */
         }
     }
 }

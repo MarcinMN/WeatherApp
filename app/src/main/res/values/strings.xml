@@ -25,5 +25,4 @@
     <string name="disable_notifications">Turn Off Notifications</string>
     <string name="notification_title">Location: %1$s</string>
     <string name="notification_text">Current Temp: %1$d°</string>
-    <string name="update_test_string">Notification Updated %1$d times</string>
 </resources>

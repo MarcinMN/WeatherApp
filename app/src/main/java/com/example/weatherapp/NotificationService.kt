@@ -14,7 +14,6 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val time = intent.getIntExtra(ELAPSED_TIME, 0)
         timer.scheduleAtFixedRate(TimeTask(time), 1800000, 1800000)
-        //timer.scheduleAtFixedRate(TimeTask(time), 60000, 60000)
         return START_NOT_STICKY
     }
 
@@ -27,7 +26,6 @@ class NotificationService : Service() {
         override fun run() {
             val intent = Intent(TIMER_UPDATED)
             time += 30
-            //time += 1
             intent.putExtra(ELAPSED_TIME, time)
             sendBroadcast(intent)
         }
