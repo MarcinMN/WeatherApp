@@ -35,9 +35,32 @@ class CurrentConditionsFragment : Fragment() {
 
         viewModel = CurrentConditionsViewModel()
 
-        binding.forecastButton.setOnClickListener {
-            val zipCodeArg = CurrentConditionsFragmentDirections.currentToForecast(args.zipCodeArg)
+        /*binding.forecastButton.setOnClickListener {
+            val zipCodeArg = CurrentConditionsFragmentDirections.currentToForecast(
+                args.zipCodeArg,
+                null,
+                null
+            )
             Navigation.findNavController(it).navigate(zipCodeArg)
+        } */
+
+        // New ForecastButton Listener
+        binding.forecastButton.setOnClickListener {
+            if (args.zipCodeArg != null) {
+                val zipCodeArg = CurrentConditionsFragmentDirections.currentToForecast(
+                    args.zipCodeArg,
+                    null,
+                    null
+                )
+                Navigation.findNavController(it).navigate(zipCodeArg)
+            } else {
+                val latLonArg = CurrentConditionsFragmentDirections.currentToForecast(
+                    null,
+                    args.latArg,
+                    args.lonArg
+                )
+                Navigation.findNavController(it).navigate(latLonArg)
+            }
         }
     }
 

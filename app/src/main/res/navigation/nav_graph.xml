@@ -36,6 +36,14 @@
             android:name="zipCodeArg"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="latArg"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lonArg"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -51,6 +59,14 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
             android:name="zipCodeArg"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="latArg"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lonArg"
             app:argType="string"
             app:nullable="true" />
     </fragment>
