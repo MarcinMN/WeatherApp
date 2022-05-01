@@ -51,8 +51,8 @@
         android:name="com.example.weatherapp.ForecastFragment"
         android:label="ForecastFragment" >
         <action
-            android:id="@+id/forecastToCurrent"
-            app:destination="@id/currentConditionsFragment"
+            android:id="@+id/forecastToForecastDetails"
+            app:destination="@id/forecastDetailsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -68,6 +68,15 @@
         <argument
             android:name="lonArg"
             app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/forecastDetailsFragment"
+        android:name="com.example.weatherapp.ForecastDetailsFragment"
+        android:label="ForecastDetailsFragment" >
+        <argument
+            android:name="forecastArg"
+            app:argType="com.example.weatherapp.Forecast"
             app:nullable="true" />
     </fragment>
 </navigation>

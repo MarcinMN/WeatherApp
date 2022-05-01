@@ -11,5 +11,6 @@ data class DayForecast(
     var temp: ForecastTemp,
     var pressure: Float,
     var humidity: Int,
+    var speed: Float,
     var weather: List<ForecastCondition>
 ) : Parcelable
