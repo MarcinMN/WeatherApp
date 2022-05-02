@@ -16,8 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 
 class ForecastDetailsFragment : Fragment() {
+
+    private val args: ForecastDetailsFragmentArgs by navArgs()
+    //private var forecast: Forecast = args.forecastArg!!
+    //private var forecastList: List<DayForecast> = forecast.list
+    //private var position: Int = args.positionArg
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,36 +33,69 @@ class ForecastDetailsFragment : Fragment() {
         val view = ComposeView(requireContext())
         view.apply {
             setContent {
+                //ScreenLayout(forecastList, position)
                 ScreenLayout()
             }
         }
         return view
     }
-}
+/*
+    @Composable
+    fun ScreenLayout(forecastList : List<DayForecast>, position: Int) {
 
-@Composable
-fun ScreenLayout() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("City", fontSize = 30.sp, modifier = Modifier.padding(16.dp))
-        Row {
-            Text("Icon", modifier = Modifier.padding(16.dp))
-            Text("Description", modifier = Modifier.padding(16.dp))
-        }
-        Text("Temp", modifier = Modifier.padding(16.dp))
-        Row {
-            Text("High", modifier = Modifier.padding(16.dp))
-            Text("Low", modifier = Modifier.padding(16.dp))
-        }
-        Row {
-            Text("Humidity", modifier = Modifier.padding(16.dp))
-            Text("Pressure", modifier = Modifier.padding(16.dp))
-            Text("Wind", modifier = Modifier.padding(16.dp))
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("City", fontSize = 30.sp, modifier = Modifier.padding(16.dp))
+            Row {
+                Text("Icon", modifier = Modifier.padding(16.dp))
+                Text("Description", modifier = Modifier.padding(16.dp))
+            }
+            Text(forecastList[position].temp.day.toInt().toString(), modifier = Modifier.padding(16.dp))
+            Row {
+                Text(forecastList[position].temp.max.toInt().toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].temp.min.toInt().toString(), modifier = Modifier.padding(16.dp))
+            }
+            Row {
+                Text(forecastList[position].humidity.toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].pressure.toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].speed.toString(), modifier = Modifier.padding(16.dp))
+            }
         }
     }
-}
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewMessage() {
-    ScreenLayout()
+    @Preview(showSystemUi = true, showBackground = true)
+    @Composable
+    fun PreviewMessage() {
+        ScreenLayout(forecastList, position)
+    }  */
+
+    @Composable
+    fun ScreenLayout() {
+
+        var forecastList : List<DayForecast> = args.forecastArg!!.list
+        var position : Int = args.positionArg
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("City", fontSize = 30.sp, modifier = Modifier.padding(16.dp))
+            Row {
+                Text("Icon", modifier = Modifier.padding(16.dp))
+                Text("Description", modifier = Modifier.padding(16.dp))
+            }
+            Text(forecastList[position].temp.day.toInt().toString(), modifier = Modifier.padding(16.dp))
+            Row {
+                Text(forecastList[position].temp.max.toInt().toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].temp.min.toInt().toString(), modifier = Modifier.padding(16.dp))
+            }
+            Row {
+                Text(forecastList[position].humidity.toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].pressure.toString(), modifier = Modifier.padding(16.dp))
+                Text(forecastList[position].speed.toString(), modifier = Modifier.padding(16.dp))
+            }
+        }
+    }
+
+    @Preview(showSystemUi = true, showBackground = true)
+    @Composable
+    fun PreviewMessage() {
+        ScreenLayout()
+    }
 }

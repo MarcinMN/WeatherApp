@@ -48,11 +48,12 @@ dependencies {
     def lifecycle_version = "2.5.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     def fragment_version = '1.4.1'
-    implementation "androidx.fragment:fragment:$fragment_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    //implementation "androidx.fragment:fragment:1.4.1"
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
     def nav_version = '2.4.1'
-    implementation "androidx.navigation:navigation-fragment-ktx:2.4.1"
-    implementation "androidx.navigation:navigation-ui-ktx:2.4.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
+    implementation "androidx.navigation:navigation-compose:2.4.2"               // new for nav problems
     implementation "com.google.android.gms:play-services-location:19.0.1"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
