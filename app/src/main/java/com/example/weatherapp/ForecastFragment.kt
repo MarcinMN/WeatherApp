@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.databinding.FragmentForecastBinding
@@ -12,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ForecastFragment : Fragment() {
+class ForecastFragment : Fragment(), OnItemClickListener {
 
     private val args: ForecastFragmentArgs by navArgs()
     private lateinit var binding: FragmentForecastBinding
@@ -33,12 +34,21 @@ class ForecastFragment : Fragment() {
         requireActivity().title = "Forecast"
 
         binding.rvForecast.layoutManager = LinearLayoutManager(context)
+
+    }
+
+    override fun onItemClicked(position: Int) {
+        val forecastArg = ForecastFragmentDirections.forecastToForecastDetails(
+            forecastViewModel.forecast.value,
+            position
+        )
+        Navigation.findNavController(binding.root).navigate(forecastArg)
     }
 
     override fun onResume() {
         super.onResume()
         forecastViewModel.forecast.observe(this) { forecast ->
-            binding.rvForecast.adapter = ForecastAdapter(forecast.list)
+            binding.rvForecast.adapter = ForecastAdapter(forecast.list, this)
         }
         if (args.zipCodeArg != null) {
             forecastViewModel.loadDataZip(args.zipCodeArg)

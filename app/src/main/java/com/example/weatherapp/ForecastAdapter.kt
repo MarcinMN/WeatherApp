@@ -10,9 +10,16 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
+class ForecastAdapter(var forecastList: List<DayForecast>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
-    inner class ForecastViewHolder(val binding: ForecastListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ForecastViewHolder(val binding: ForecastListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(position: Int, clickListener: OnItemClickListener) {
+            itemView.setOnClickListener {
+                clickListener.onItemClicked(position)
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         val binding = ForecastListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,6 +28,9 @@ class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         val context = holder.itemView.context
+
+        holder.bind(position, itemClickListener)
+
         holder.binding.apply {
             val iconName = forecastList[position].weather.firstOrNull()?.icon
             val iconUrl = "https://openweathermap.org/img/wn/${iconName}@2x.png"
@@ -55,4 +65,8 @@ class ForecastAdapter(var forecastList: List<DayForecast>) : RecyclerView.Adapte
         val time = formatter.format(dateTime)
         return time
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClicked(position: Int)
 }
