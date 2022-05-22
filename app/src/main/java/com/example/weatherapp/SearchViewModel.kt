@@ -45,8 +45,17 @@ class SearchViewModel @Inject constructor(private val api: Api) : ViewModel() {
         }
     }
 
-    // New location function
     fun localWeatherButtonClicked(lat: String, lon: String) = runBlocking {
+        launch {
+            try {
+                _currentConditions.value = api.getCurrentConditionsLatLon(lat, lon)
+            } catch(e : HttpException) {
+                _showErrorDialog.value = true
+            }
+        }
+    }
+
+    fun notificationButtonClicked(lat: String, lon: String) = runBlocking {
         launch {
             try {
                 _currentConditions.value = api.getCurrentConditionsLatLon(lat, lon)

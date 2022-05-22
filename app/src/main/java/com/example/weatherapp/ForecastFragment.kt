@@ -40,10 +40,6 @@ class ForecastFragment : Fragment() {
         forecastViewModel.forecast.observe(this) { forecast ->
             binding.rvForecast.adapter = ForecastAdapter(forecast.list)
         }
-        // Old code:
-        //forecastViewModel.loadData(args.zipCodeArg)
-
-        // New code:
         if (args.zipCodeArg != null) {
             forecastViewModel.loadDataZip(args.zipCodeArg)
         } else {

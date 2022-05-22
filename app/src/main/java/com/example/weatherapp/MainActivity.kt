@@ -18,8 +18,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     private val apiKey = "5025177c6bd1ce93f4ffa221fd7f7c8c"
     private val REQUEST_LOCATION_PERMISSION = 1234
-    //private var lat: String? = "44.9537"
-    //private var lon: String? = "-93.0900"
     private var lat: String? = null
     private var lon: String? = null
 
